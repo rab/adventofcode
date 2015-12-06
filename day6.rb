@@ -39,6 +39,15 @@ class BinaryLights
     @lights = Array.new(x) { Array.new(y) { false } }
   end
 
+  def show(on: '█', off: ' ', output: $stdout)
+    @lights.each do |row|
+      row.each do |light|
+        output.print light ? on : off
+      end
+      output.print "\n"
+    end
+  end
+
   def command(line)
     cmd, x1, y1, x2, y2 = CMD.match(line).captures
     send(cmd, [x1.to_i, y1.to_i], [x2.to_i, y2.to_i])
@@ -89,6 +98,7 @@ input.each_line do |line|
 end
 
 puts "%d lights on"%[lights.on?]
+lights.show
 
 # star 2
 class AnalogLights < BinaryLights
