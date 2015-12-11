@@ -27,7 +27,7 @@ day = /day(\d+)\.rb/.match(__FILE__)[1].to_i
 input = '3113322113'
 
 # star 1
-40.times { input = input.scan(/((.)\2*)/).map {|s,d| "#{s.length}#{d}"}.join }
+40.times { input = input.gsub(/((.)\2*)/) {|m| "#{$1.length}#{$2}" } }
 
 puts input.length
 
@@ -41,5 +41,27 @@ puts input.length
 # Now, starting again with the digits in your puzzle input, apply this process 50 times. What is
 # the length of the new result?
 
-10.times { input = input.scan(/((.)\2*)/).map {|s,d| "#{s.length}#{d}"}.join }
+10.times { input = input.gsub(/((.)\2*)/) {|m| "#{$1.length}#{$2}" } }
 puts input.length
+
+# Saw a "challenge" on reddit:
+# https://www.reddit.com/r/adventofcode/comments/3w7yrk/challenge_how_high_can_you_go_in_under_1_minute/
+input = '3113322113'
+puts "resetting for a 1 minute run"
+iters = 0
+require 'timeout'
+started = Time.now
+begin
+  Timeout::timeout(60) do
+    loop do
+      input = input.gsub(/((.)\2*)/) {|m| "#{$1.length}#{$2}" }
+      iters += 1
+    end
+  end
+rescue Timeout::ExitException
+  ended = Time.now
+
+  puts "Processed #{iters} iterations in #{ended - started} seconds"
+  puts "final size is #{input.length}"
+end
+# changing from scan/map/join to gsub boosted iters in 1min from 54 to 57
