@@ -53,8 +53,8 @@
 # would be 40*8 + 60*3 = 500. The total score would go down, though: only 57600000, the best you
 # can do in such trying circumstances.
 #
-# Given the ingredients in your kitchen and their properties, what is the total score of the highest-scoring cookie you can make with a calorie total of 500?
-
+# Given the ingredients in your kitchen and their properties, what is the total score of the
+# highest-scoring cookie you can make with a calorie total of 500?
 
 require_relative 'input'
 day = /day(\d+)\.rb/.match(__FILE__)[1].to_i
@@ -62,22 +62,18 @@ input = <<-EOF
 Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
 Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
 EOF
-#input = Input.for_day(day)
 input = <<-EOF
 Sugar: capacity 3, durability 0, flavor 0, texture -3, calories 2
 Sprinkles: capacity -3, durability 3, flavor 0, texture 0, calories 9
 Candy: capacity -1, durability 0, flavor 4, texture 0, calories 1
 Chocolate: capacity 0, durability 0, flavor -2, texture 2, calories 8
 EOF
+
+input = Input.for_day(day)
+
 require 'set'
 
 class Ingredient < Struct.new(:name, :capacity, :durability, :flavor, :texture, :calories)
-  # capacity   (how well it helps the cookie absorb milk)
-  # durability (how well it keeps the cookie intact when full of milk)
-  # flavor     (how tasty it makes the cookie)
-  # texture    (how it improves the feel of the cookie)
-  # calories   (how many calories it adds to the cookie)
-
   def +(other)
     self.class.new([self.name, other.name].join('+'),
                    self.capacity + other.capacity,
@@ -147,9 +143,16 @@ end
 shelf = ingredients.map(&:name)
 # puts shelf.inspect
 qty = 100
+
+# star 1
 best_score = nil
 best_recipe = nil
 best_cookie = nil
+# star 2
+meal_score = nil
+meal_recipe = nil
+meal_cookie = nil
+
 Split.new(qty, shelf.size).each do |*qtys|
   recipe = shelf.zip(qtys).to_h
   # puts recipe.inspect
@@ -159,12 +162,19 @@ Split.new(qty, shelf.size).each do |*qtys|
     batch << ingredient * recipe[ingredient.name]
   end
   cookie = batch.reduce(:+)
-  next unless cookie.calories == 500
+  if cookie.calories == 500
+    if meal_score.nil? || cookie.score > meal_score
+      meal_score = cookie.score
+      meal_recipe = recipe
+      meal_cookie = cookie
+    end
+  end
   if best_score.nil? || cookie.score > best_score
     best_score = cookie.score
     best_recipe = recipe
     best_cookie = cookie
   end
 end
-puts "Best cookie: #{best_cookie.taste}"
 
+puts "Best cookie: #{best_cookie.taste}"
+puts "Meal cookie: #{meal_cookie.taste}"
