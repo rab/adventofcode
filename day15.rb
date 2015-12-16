@@ -42,6 +42,19 @@
 # Given the ingredients in your kitchen and their properties, what is the total score of the
 # highest-scoring cookie you can make?
 #
+# --- Part Two ---
+#
+# Your cookie recipe becomes wildly popular! Someone asks if you can make another recipe that has
+# exactly 500 calories per cookie (so they can use it as a meal replacement). Keep the rest of
+# your award-winning process the same (100 teaspoons, same ingredients, same scoring system).
+#
+# For example, given the ingredients above, if you had instead selected 40 teaspoons of
+# butterscotch and 60 teaspoons of cinnamon (which still adds to 100), the total calorie count
+# would be 40*8 + 60*3 = 500. The total score would go down, though: only 57600000, the best you
+# can do in such trying circumstances.
+#
+# Given the ingredients in your kitchen and their properties, what is the total score of the highest-scoring cookie you can make with a calorie total of 500?
+
 
 require_relative 'input'
 day = /day(\d+)\.rb/.match(__FILE__)[1].to_i
@@ -49,7 +62,13 @@ input = <<-EOF
 Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
 Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3
 EOF
-# input = Input.for_day(day)
+#input = Input.for_day(day)
+input = <<-EOF
+Sugar: capacity 3, durability 0, flavor 0, texture -3, calories 2
+Sprinkles: capacity -3, durability 3, flavor 0, texture 0, calories 9
+Candy: capacity -1, durability 0, flavor 4, texture 0, calories 1
+Chocolate: capacity 0, durability 0, flavor -2, texture 2, calories 8
+EOF
 require 'set'
 
 class Ingredient < Struct.new(:name, :capacity, :durability, :flavor, :texture, :calories)
@@ -89,8 +108,31 @@ class Ingredient < Struct.new(:name, :capacity, :durability, :flavor, :texture, 
     END
   end
 
+  def score
+    @score ||= self.pos_capacity * self.pos_durability * self.pos_flavor * self.pos_texture
+  end
+
   def taste
-    "#{self.name} is #{self.pos_capacity * self.pos_durability * self.pos_flavor * self.pos_texture}"
+    "#{self.name} is #{self.score} for #{self.calories}"
+  end
+end
+
+class Split
+  def initialize(total, splits)
+    @total = total
+    @splits = splits
+  end
+
+  def each
+    if @splits == 1
+      yield @total
+    else
+      (0..@total).each do |qty|
+        self.class.new(@total - qty, @splits - 1).each do |*qtys|
+          yield qty, *qtys
+        end
+      end
+    end
   end
 end
 
@@ -99,7 +141,30 @@ input.each_line do |line|
   /\A(?<name>\w+): capacity (?<capacity>-?\d+), durability (?<durability>-?\d+), flavor (?<flavor>-?\d+), texture (?<texture>-?\d+), calories (?<calories>-?\d+)\z/ =~ line.chomp
   ingredients << Ingredient.new(name, capacity.to_i, durability.to_i, flavor.to_i, texture.to_i, calories.to_i)
 end
+# puts ingredients.inspect
 
-ingredients.each do |ingredient|
-  puts ingredient.taste
+# recipe = { "Butterscotch" => 44, "Cinnamon" => 56 }
+shelf = ingredients.map(&:name)
+# puts shelf.inspect
+qty = 100
+best_score = nil
+best_recipe = nil
+best_cookie = nil
+Split.new(qty, shelf.size).each do |*qtys|
+  recipe = shelf.zip(qtys).to_h
+  # puts recipe.inspect
+  batch = []
+  ingredients.each do |ingredient|
+    # puts ingredient.inspect
+    batch << ingredient * recipe[ingredient.name]
+  end
+  cookie = batch.reduce(:+)
+  next unless cookie.calories == 500
+  if best_score.nil? || cookie.score > best_score
+    best_score = cookie.score
+    best_recipe = recipe
+    best_cookie = cookie
+  end
 end
+puts "Best cookie: #{best_cookie.taste}"
+
