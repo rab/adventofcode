@@ -18,9 +18,11 @@ When I was recognized on the [Leaderboard]
 
 Day | Position
 --- | --------
+16  | 179 (based on [Stats] when I solved)
 11  | 35
 10  | 40
 
 [Advent of Code]: http://www.adventofcode.com/
 [Leaderboard]: http://www.adventofcode.com/leaderboard
+[Stats]: http://www.adventofcode.com/stats
 [Github]: http://github.com/
