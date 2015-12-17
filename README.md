@@ -18,6 +18,7 @@ When I was recognized on the [Leaderboard]
 
 Day | Position
 --- | --------
+17  | 93
 16  | 179 (based on [Stats] when I solved)
 11  | 35
 10  | 40
