@@ -18,6 +18,7 @@ When I was recognized on the [Leaderboard]
 
 Day | Position
 --- | --------
+18  | 133 (based on [Stats] when I solved, missed it by 5 min.)
 17  | 93
 16  | 179 (based on [Stats] when I solved)
 11  | 35
