@@ -148,7 +148,7 @@ EOF
 
 input = Input.for_day(day)
 
-steps = 100
+steps = 1000
 
 class Grid
   def initialize(content)
@@ -207,8 +207,9 @@ class Grid
 end
 
 grid = Grid.new(input)
-steps.times { grid.fritz; grid.step }
 grid.fritz
+top = `tput ho`
+steps.times { grid.step; grid.fritz ; print top; print grid.to_s  }
 puts grid.lights_on
 
 
