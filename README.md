@@ -18,6 +18,7 @@ When I was recognized on the [Leaderboard]
 
 Day | Position
 --- | --------
+19  | 382 (based on [Stats] when I solved) This was the first day that made a naïve, brute-force impossible!
 18  | 133 (based on [Stats] when I solved, missed it by 5 min.)
 17  | 93
 16  | 179 (based on [Stats] when I solved)
