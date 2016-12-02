@@ -43,8 +43,6 @@ input = 36_000_000
 
 target = input.to_i
 
-presents = [0]
-
 module Divisors
   extend self
   def of(n)
@@ -67,7 +65,7 @@ loop do
 end
 puts "1: house %8d gets %8d presents"%[house,presents]
 
-# SInce it has to be larger, we can keep going
+# Since it has to be larger, we can keep going
 
 # star 2
 loop do
