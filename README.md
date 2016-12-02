@@ -6,7 +6,7 @@ On December 10th, I was up late and solved the problems right away and got onto 
 
 While perusing the [Leaderboard], I made note of when the link was to [Github] and the solution was in ruby.
 
-* [rab/adventofcode](https://github.com/rab/adventofcode) (mine, of course!)
+* [rab/adventofcode2015](https://github.com/rab/adventofcode2015) (mine, of course!)
 * [asross/adventofcode](https://github.com/asross/adventofcode)
 * [edanaher/advent-solutions](https://github.com/edanaher/advent-solutions) Interestingly, in `ruby` or `sed`
 * [kristjan/adventofcode](https://github.com/kristjan/adventofcode)
@@ -26,7 +26,7 @@ Day | Position
 11  | 35
 10  | 40
 
-[Advent of Code]: http://www.adventofcode.com/
+[Advent of Code]: http://www.adventofcode.com/2015/
 [Leaderboard]: http://www.adventofcode.com/leaderboard
 [Stats]: http://www.adventofcode.com/stats
 [Github]: http://github.com/
