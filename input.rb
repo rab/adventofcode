@@ -8,7 +8,7 @@ module Input
     if File.exist? cache_file
       File.read(cache_file)
     else
-      uri = URI('http://adventofcode.com/day/%s/input'%[day.to_s])
+      uri = URI('http://adventofcode.com/2015/day/%s/input'%[day.to_s])
       req = Net::HTTP::Get.new(uri)
       req['Cookie'] = File.read('./.session') if File.exist?('./.session')
       res = Net::HTTP.start(uri.hostname, uri.port) {|http|
